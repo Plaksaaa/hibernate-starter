@@ -16,14 +16,19 @@ import javax.persistence.*;
 @Table(name = "users", schema = "public")
 public class User {
 
-    @Id
-    private String username;
-    private String firstname;
-    private String lastname;
+    /*@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
+//    @SequenceGenerator(name = "user_gen", sequenceName = "users_id_seq", allocationSize = 1)
+    private Long id;*/
 
-//    @Convert(converter = BirthdayConverter.class)
-    @Column(name = "birth_date")
-    private Birthday birthDate;
+    @Column(unique = true)
+    private String username;
+
+    @EmbeddedId
+//    @Embedded
+    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
+    private PersonalInfo personalInfo;
 
     @Type(type = "jsonb")
     private String info;

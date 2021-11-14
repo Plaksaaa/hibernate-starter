@@ -1,10 +1,14 @@
 package com.plaxa;
 
+import com.plaxa.entity.Birthday;
+import com.plaxa.entity.PersonalInfo;
 import com.plaxa.entity.User;
 import com.plaxa.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 @Slf4j
 public class HibernateRunner {
@@ -13,9 +17,12 @@ public class HibernateRunner {
 
     public static void main(String[] args) throws SQLException {
         var user = User.builder()
-                .username("loll")
-                .lastname("ivan")
-                .firstname("ivan")
+                .username("nasty@lol")
+                .personalInfo(PersonalInfo.builder()
+                        .firstname("nasty")
+                        .lastname("redHead")
+                        .birthDate(new Birthday(LocalDate.of(2004, 4, 27)))
+                        .build())
                 .build();
 
         log.info("User entity is in transient state, object : {}", user);
@@ -34,6 +41,17 @@ public class HibernateRunner {
             }
 
             log.warn("User is in detached state: {}, session is closed {}", user, session1);
+
+            try (Session session = factory.openSession()) {
+                var key = PersonalInfo.builder()
+                        .firstname("nasty")
+                        .lastname("redHead")
+                        .birthDate(new Birthday(LocalDate.of(2004, 4, 27)))
+                        .build();
+
+                var user1 = session.get(User.class, key);
+                System.out.println(user1);
+            }
         } catch (Exception e) {
             log.error("Exception occurred", e);
             throw e;
