@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.plaxa.HibernateRunnerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-11T14:46:43" hostname="MacBook-Pro-Maksim.local" time="0.025">
+  <properties/>
+  <testcase name="checkReflectionApi()" classname="com.plaxa.HibernateRunnerTest" time="0.025"/>
+  <system-out><![CDATA[insert
+into
+public.users
+(username, firstname, lastname, birth_date, age)
+values
+(?, ?, ?, ?, ?)
+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
