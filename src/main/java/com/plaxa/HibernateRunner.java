@@ -1,11 +1,11 @@
 package com.plaxa;
 
 import com.plaxa.entity.Birthday;
+import com.plaxa.entity.Company;
 import com.plaxa.entity.PersonalInfo;
 import com.plaxa.entity.User;
 import com.plaxa.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -16,6 +16,10 @@ public class HibernateRunner {
 //    private static final Logger log = LoggerFactory.getLogger(HibernateRunner.class);
 
     public static void main(String[] args) throws SQLException {
+        var company = Company.builder()
+                .name("Google")
+                .build();
+
         var user = User.builder()
                 .username("nasty@lol")
                 .personalInfo(PersonalInfo.builder()
@@ -23,6 +27,7 @@ public class HibernateRunner {
                         .lastname("redHead")
                         .birthDate(new Birthday(LocalDate.of(2004, 4, 27)))
                         .build())
+                .company(company)
                 .build();
 
         log.info("User entity is in transient state, object : {}", user);
@@ -30,17 +35,18 @@ public class HibernateRunner {
         try (var factory = HibernateUtil.buildSessionFactory()) {
             var session1 = factory.openSession();
             try (session1) {
+
                 var transaction = session1.beginTransaction();
-                log.trace("Transaction is created, {}", transaction);
 
-                session1.saveOrUpdate(user);
-                log.trace("User is in persistent state: {}, session {}", user, session1);
-
+                var user1 = session1.get(User.class, 1L);
+                System.out.println(user1);
+                /*session1.save(company);
+                session1.save(user);*/
 
                 session1.getTransaction().commit();
             }
 
-            log.warn("User is in detached state: {}, session is closed {}", user, session1);
+            /*log.warn("User is in detached state: {}, session is closed {}", user, session1);
 
             try (Session session = factory.openSession()) {
                 var key = PersonalInfo.builder()
@@ -55,7 +61,7 @@ public class HibernateRunner {
         } catch (Exception e) {
             log.error("Exception occurred", e);
             throw e;
-        }
+        }*/
 
            /* try (var session2 = factory.openSession()) {
                 session2.beginTransaction();
@@ -86,5 +92,6 @@ public class HibernateRunner {
 
             session.getTransaction().commit();
         }*/
+        }
     }
 }

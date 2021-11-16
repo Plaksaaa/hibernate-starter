@@ -13,6 +13,9 @@
     <property name="format_sql">true</property>
 
     <mapping class="com.plaxa.entity.User"/>
+    <mapping class="com.plaxa.entity.Company"/>
+    <mapping class="com.plaxa.entity.Profile"/>
+    <mapping class="com.plaxa.entity.Chat"/>
 
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
