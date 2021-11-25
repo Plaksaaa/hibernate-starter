@@ -1,24 +1,92 @@
 package com.plaxa;
 
-import com.plaxa.entity.Chat;
-import com.plaxa.entity.Company;
-import com.plaxa.entity.Profile;
-import com.plaxa.entity.User;
+import com.plaxa.entity.*;
+import com.plaxa.util.HibernateTestUtil;
 import com.plaxa.util.HibernateUtil;
 import lombok.Cleanup;
+import org.hibernate.annotations.QueryHints;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
-
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.joining;
+import javax.persistence.FlushModeType;
 
 class HibernateRunnerTest {
+
+    @Test
+    void chekHql() {
+        try (var factory = HibernateTestUtil.buildSessionFactory();
+             var session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            var userList = session.createQuery(
+                    "select u from User u " +
+                            "join u.company c " +
+                            "where u.personalInfo.firstname = :firstname", User.class)
+                    .setParameter("firstname", "nasty")
+                    .setFlushMode(FlushModeType.AUTO)
+                    .setHint(QueryHints.FETCH_SIZE, "50")
+                    .list();
+
+            var countRows = session.createQuery("update User u set u.role = 'ADMIN'")
+                    .executeUpdate();
+
+//            session.createNativeQuery("select u.* from users u where u.firstname = 'nasty'", User.class);
+
+            
+            session.getTransaction().commit();
+        }
+    }
+
+    @Test
+    void checkH2() {
+        try (var factory = HibernateTestUtil.buildSessionFactory();
+             var session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            var company = Company.builder()
+                    .name("Google")
+                    .build();
+            session.save(company);
+
+            /*var programmer = Programmer.builder()
+                    .username("kolya@gmail.com")
+                    .language(Language.JAVA)
+                    .company(company)
+                    .build();
+            session.save(programmer);*/
+
+            /*var manager = Manager.builder()
+                    .username("tanya@gmail.com")
+                    .projectName("Starter")
+                    .company(company)
+                    .build();
+            session.save(manager);*/
+            session.flush();
+
+            session.clear();
+
+            var programmer1 = session.get(Programmer.class, 1);
+            var user = session.get(User.class, 1);
+
+            session.getTransaction().commit();
+        }
+    }
+
+    @Test
+    void localeInfo() {
+        try (var factory = HibernateUtil.buildSessionFactory();
+             var session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            var company = session.get(Company.class, 1);
+            company.getUsers().forEach(System.out::println);
+//            company.getUsers().forEach((k, v) -> System.out.println(v)); for map
+
+            session.getTransaction().commit();
+        }
+    }
 
     @Test
     void checkManyToMany() {
@@ -28,19 +96,24 @@ class HibernateRunnerTest {
             session.beginTransaction();
 
             var user = session.get(User.class, 3L);
+            var chat = session.get(Chat.class, 1L);
 
-            var chat = Chat.builder()
-                    .name("LolchikChat")
+            /*var userChat = UserChat.builder()
+                    .createdAt(Instant.now())
+                    .createdBy(user.getUsername())
                     .build();
 
-            user.addChat(chat);
-            session.save(chat);
+            userChat.setUser(user);
+            userChat.setChat(chat);*/
+
+//            user.addChat(chat);
+//            session.save(userChat);
 
             session.getTransaction().commit();
         }
     }
 
-    @Test
+    /*@Test
     void checkOneToOne() {
         try (var factory = HibernateUtil.buildSessionFactory();
              var session = factory.openSession()) {
@@ -62,7 +135,7 @@ class HibernateRunnerTest {
 
             session.getTransaction().commit();
         }
-    }
+    }*/
 
     @Test
     void checkOrphanRemoval() {
@@ -109,7 +182,7 @@ class HibernateRunnerTest {
         session.getTransaction().commit();
     }
 
-    @Test
+    /*@Test
     void addUserToNewCompany() {
         @Cleanup var factory = HibernateUtil.buildSessionFactory();
         @Cleanup var session = factory.openSession();
@@ -132,7 +205,7 @@ class HibernateRunnerTest {
         session.save(company);
 
         session.getTransaction().commit();
-    }
+    }*/
 
     @Test
     void oneToMany() {
@@ -147,14 +220,14 @@ class HibernateRunnerTest {
         session.getTransaction().commit();
     }
 
-    @Test
+    /*@Test
     void checkReflectionApi() throws SQLException, IllegalAccessException {
         User user = User.builder()
                 .build();
 
         String sql = """
                 insert
-                into 
+                into
                 %s
                 (%s)
                 values
@@ -186,5 +259,5 @@ class HibernateRunnerTest {
                 preparedStatement.setObject(1, declaredField.get(user));
             }
         }
-    }
+    }*/
 }

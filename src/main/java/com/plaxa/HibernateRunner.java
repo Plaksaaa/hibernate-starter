@@ -1,14 +1,12 @@
 package com.plaxa;
 
-import com.plaxa.entity.Birthday;
-import com.plaxa.entity.Company;
-import com.plaxa.entity.PersonalInfo;
 import com.plaxa.entity.User;
 import com.plaxa.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.graph.GraphSemantic;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.Map;
 
 @Slf4j
 public class HibernateRunner {
@@ -16,7 +14,39 @@ public class HibernateRunner {
 //    private static final Logger log = LoggerFactory.getLogger(HibernateRunner.class);
 
     public static void main(String[] args) throws SQLException {
-        var company = Company.builder()
+
+        try (var factory = HibernateUtil.buildSessionFactory();
+             var session = factory.openSession()) {
+            session.beginTransaction();
+
+           /* var entityGraph = session.createEntityGraph(User.class);
+            entityGraph.addAttributeNodes("company", "userChats");
+            var userChats = entityGraph.addKeySubgraph("userChats", UserChat.class);
+            userChats.addAttributeNodes("chat"); - вместо аннотаций*/
+//            session.enableFetchProfile("withCompany");
+
+//            RootGraph<?> graph = session.getEntityGraph("withCompanyAndChat");
+
+            Map<String, Object> properties = Map.of(
+                    GraphSemantic.LOAD.getJpaHintName(), session.getEntityGraph("withCompanyAndChat")
+            );
+
+            var user1 = session.find(User.class, 1, properties);
+
+
+            var users = session.createQuery(
+                            "select u from User u where 1 = 1", User.class)
+                    .setHint(GraphSemantic.LOAD.getJpaHintName(), session.getEntityGraph("withCompanyAndChat"))
+                    .list();
+
+            users.forEach(user -> System.out.println(user.getUserChats().size()));
+            users.forEach(user -> System.out.println(user.getCompany().getName()));
+
+            session.getTransaction().commit();
+        }
+    }
+
+       /* var company = Company.builder()
                 .name("Google")
                 .build();
 
@@ -30,7 +60,7 @@ public class HibernateRunner {
                 .company(company)
                 .build();
 
-        log.info("User entity is in transient state, object : {}", user);
+//        log.info("User entity is in transient state, object : {}", user);
 
         try (var factory = HibernateUtil.buildSessionFactory()) {
             var session1 = factory.openSession();
@@ -40,11 +70,11 @@ public class HibernateRunner {
 
                 var user1 = session1.get(User.class, 1L);
                 System.out.println(user1);
-                /*session1.save(company);
-                session1.save(user);*/
+                *//*session1.save(company);
+                session1.save(user);*//*
 
                 session1.getTransaction().commit();
-            }
+            }*/
 
             /*log.warn("User is in detached state: {}, session is closed {}", user, session1);
 
@@ -92,6 +122,4 @@ public class HibernateRunner {
 
             session.getTransaction().commit();
         }*/
-        }
-    }
 }
