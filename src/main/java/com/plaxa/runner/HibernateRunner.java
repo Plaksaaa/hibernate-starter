@@ -1,4 +1,4 @@
-package com.plaxa;
+package com.plaxa.runner;
 
 import com.plaxa.entity.User;
 import com.plaxa.util.HibernateUtil;
@@ -18,12 +18,6 @@ public class HibernateRunner {
         try (var factory = HibernateUtil.buildSessionFactory();
              var session = factory.openSession()) {
             session.beginTransaction();
-
-           /* var entityGraph = session.createEntityGraph(User.class);
-            entityGraph.addAttributeNodes("company", "userChats");
-            var userChats = entityGraph.addKeySubgraph("userChats", UserChat.class);
-            userChats.addAttributeNodes("chat"); - вместо аннотаций*/
-//            session.enableFetchProfile("withCompany");
 
 //            RootGraph<?> graph = session.getEntityGraph("withCompanyAndChat");
 
