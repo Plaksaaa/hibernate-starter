@@ -1,12 +1,13 @@
 package com.plaxa.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.FetchProfile;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import static com.plaxa.util.StringUtils.SPACE;
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "Users")
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements BaseEntity<Long> {
 

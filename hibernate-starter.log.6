@@ -1,24 +1,17 @@
-[2021-11-24 23:14:18, 144] INFO [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator: 52] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-[2021-11-24 23:14:18, 258] INFO [org.hibernate.orm.connections.pooling: 502] HHH10001008: Cleaning up connection pool [jdbc:postgresql://localhost:5433/postgres]
-[2021-11-25 23:54:31, 617] INFO [org.hibernate.Version: 44] HHH000412: Hibernate ORM core version 5.6.1.Final
-[2021-11-25 23:54:31, 815] INFO [Hibernate Types: 298] This framework is proudly powered by:
-
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
- _    _                           _     _
-| |  | |                         (_)   | |
-| |__| |_   _ _ __   ___ _ __ ___ _ ___| |_ ___ _ __   ___ ___
-|  __  | | | | '_ \ / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \
-| |  | | |_| | |_) |  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/
-|_|  |_|\__, | .__/ \___|_|  |___/_|___/\__\___|_| |_|\___\___|
-         __/ | |
-        |___/|_|
-
-At Hypersistence, we only build amazing tools, like Hibernate Types, Flexy Pool, or Hypersistence Optimizer.
-
-What if there were a tool that could automatically detect JPA and Hibernate performance issues?
-
-Hypersistence Optimizer is that tool! For more details, go to: 
-
-https://vladmihalcea.com/hypersistence-optimizer/
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
+[2021-11-30 12:02:39, 798] WARN [org.hibernate.engine.jdbc.spi.SqlExceptionHelper: 230] SQL Warning Code: 0, SQLState: 00000
+[2021-11-30 12:02:39, 798] WARN [org.hibernate.engine.jdbc.spi.SqlExceptionHelper: 231] constraint "fk1da3iuv2pgbruhtujylkbmv14" of relation "profile" does not exist, skipping
+[2021-11-30 12:02:39, 802] WARN [org.hibernate.engine.jdbc.spi.SqlExceptionHelper: 230] SQL Warning Code: 0, SQLState: 00000
+[2021-11-30 12:02:39, 802] WARN [org.hibernate.engine.jdbc.spi.SqlExceptionHelper: 231] constraint "fk4n5ew9rhowx26b46nwirrcfdi" of relation "users_chat" does not exist, skipping
+[2021-11-30 12:02:39, 831] INFO [org.hibernate.orm.connections.access: 48] HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@65fc8edc] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+[2021-11-30 12:02:40, 204] INFO [org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: 258] Session Metrics {
+    29659 nanoseconds spent acquiring 1 JDBC connections;
+    52506 nanoseconds spent releasing 1 JDBC connections;
+    3820859 nanoseconds spent preparing 57 JDBC statements;
+    110390044 nanoseconds spent executing 57 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    20748017 nanoseconds spent performing 53 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    56421109 nanoseconds spent executing 2 flushes (flushing a total of 90 entities and 38 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}

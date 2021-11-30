@@ -23,6 +23,10 @@ public class QAuditableEntity extends EntityPathBase<AuditableEntity<? extends j
 
     public final StringPath createdBy = createString("createdBy");
 
+    public final DateTimePath<java.time.Instant> updatedAt = createDateTime("updatedAt", java.time.Instant.class);
+
+    public final StringPath updatedBy = createString("updatedBy");
+
     @SuppressWarnings({"all", "rawtypes", "unchecked"})
     public QAuditableEntity(String variable) {
         super((Class) AuditableEntity.class, forVariable(variable));

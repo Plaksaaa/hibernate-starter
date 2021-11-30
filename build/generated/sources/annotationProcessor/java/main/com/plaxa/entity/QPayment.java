@@ -22,11 +22,25 @@ public class QPayment extends EntityPathBase<Payment> {
 
     public static final QPayment payment = new QPayment("payment");
 
+    public final QAuditableEntity _super = new QAuditableEntity(this);
+
     public final NumberPath<Integer> amount = createNumber("amount", Integer.class);
+
+    //inherited
+    public final DateTimePath<java.time.Instant> createdAt = _super.createdAt;
+
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final QUser receiver;
+
+    //inherited
+    public final DateTimePath<java.time.Instant> updatedAt = _super.updatedAt;
+
+    //inherited
+    public final StringPath updatedBy = _super.updatedBy;
 
     public final NumberPath<Long> version = createNumber("version", Long.class);
 

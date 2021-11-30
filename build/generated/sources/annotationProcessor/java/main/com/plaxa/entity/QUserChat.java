@@ -34,6 +34,12 @@ public class QUserChat extends EntityPathBase<UserChat> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    //inherited
+    public final DateTimePath<java.time.Instant> updatedAt = _super.updatedAt;
+
+    //inherited
+    public final StringPath updatedBy = _super.updatedBy;
+
     public final QUser user;
 
     public QUserChat(String variable) {
