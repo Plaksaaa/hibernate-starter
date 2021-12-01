@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class UserDaoTest {
+public class UserRepositoryTest {
 
     private final SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
     private final UserDao userDao = UserDao.getInstance();

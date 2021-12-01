@@ -19,7 +19,7 @@ public class TransactionRunner {
 //            session.setDefaultReadOnly(true);
             session.beginTransaction();
 
-            session.createNativeQuery("SET TRANSACTION READ ONLY;").executeUpdate();
+//            session.createNativeQuery("SET TRANSACTION READ ONLY;").executeUpdate();
 
            /* session.createQuery("select p from Payment p", Payment.class)
 //                    .setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT)

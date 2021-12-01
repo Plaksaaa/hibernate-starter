@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -24,5 +25,6 @@ public class PersonalInfo implements Serializable {
     private String lastname;
 
 //    @Column(name = "birth_date")
+    @NotNull
     private LocalDate birthDate;
 }

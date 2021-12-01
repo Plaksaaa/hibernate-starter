@@ -18,7 +18,7 @@ import java.util.Map;
 @Builder
 @Entity
 @Audited
-public class Company {
+public class Company implements BaseEntity<Integer>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

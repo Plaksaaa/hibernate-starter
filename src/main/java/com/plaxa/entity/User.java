@@ -1,17 +1,25 @@
 package com.plaxa.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.FetchProfile;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.plaxa.util.StringUtils.SPACE;
 
+@NamedEntityGraph(name = "withCompany",
+        attributeNodes = {
+                @NamedAttributeNode("company"),
+        }
+)
 @NamedEntityGraph(name = "withCompanyAndChat",
         attributeNodes = {
                 @NamedAttributeNode("company"),
@@ -36,6 +44,7 @@ import static com.plaxa.util.StringUtils.SPACE;
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "Users")
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements BaseEntity<Long> {
 
@@ -45,9 +54,11 @@ public class User implements BaseEntity<Long> {
 //    @SequenceGenerator(name = "user_gen", sequenceName = "users_id_seq", allocationSize = 1)
     private Long id;
 
+    @NotNull
     @Column(unique = true)
     private String username;
 
+    @Valid
     @Embedded
     @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
     private PersonalInfo personalInfo;

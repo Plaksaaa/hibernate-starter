@@ -1,7 +1,6 @@
 package com.plaxa.util;
 
 import com.plaxa.entity.*;
-import lombok.Cleanup;
 import lombok.experimental.UtilityClass;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 public class TestDataImporter {
 
     public void importData(SessionFactory sessionFactory) {
-        @Cleanup Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
 
         Company microsoft = saveCompany(session, "Microsoft");
         Company apple = saveCompany(session, "Apple");
