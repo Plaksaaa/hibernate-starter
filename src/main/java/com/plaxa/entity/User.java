@@ -8,11 +8,18 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.plaxa.util.StringUtils.SPACE;
 
+@NamedEntityGraph(name = "withCompany",
+        attributeNodes = {
+                @NamedAttributeNode("company"),
+        }
+)
 @NamedEntityGraph(name = "withCompanyAndChat",
         attributeNodes = {
                 @NamedAttributeNode("company"),
@@ -47,9 +54,11 @@ public class User implements BaseEntity<Long> {
 //    @SequenceGenerator(name = "user_gen", sequenceName = "users_id_seq", allocationSize = 1)
     private Long id;
 
+    @NotNull
     @Column(unique = true)
     private String username;
 
+    @Valid
     @Embedded
     @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
     private PersonalInfo personalInfo;
